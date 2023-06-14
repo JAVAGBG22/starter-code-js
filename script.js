@@ -48,10 +48,13 @@ const account = {
 
     atm();
   },
-  getBalance: function () {},
+  getBalance: function () {
+    alert(`Your current balance is: ${this.balance}`);
+    atm();
+  },
   deposit: function () {
     // se till att spara user input någonstans
-    parseFloat(prompt("How much would you like to deposit?"));
+    const amount = parseFloat(prompt("How much would you like to deposit?"));
 
     // efter att user input är sparat bör man kontrollera
     // så att user input är en giltlig input, alltså ett numer och inget annat.
@@ -62,12 +65,39 @@ const account = {
         // returneras om villkoret är true
     } */
 
+    if (amount <= 0 || isNaN(amount)) {
+      alert("Error: please enter a valid number!");
+      this.deposit();
+    } else {
+      //this.balance = this.balance + amount;
+      this.balance += amount;
+      //console.log(this.balance);
+      this.getBalance();
+    }
+
     // om det är en korrekt user input då ska balance propertyn öka, alltså
     // summan som kom från user input ska plussas på balance property
     // kan vara god console.log(balance)
   },
-  withdrawal: function () {},
-  exitAccount: function () {},
+  withdrawal: function () {
+    const withdraw = parseFloat(prompt("How much would you like to withdraw?"));
+    if (withdraw <= 0 || isNaN(withdraw)) {
+      alert("Error: please enter a valid number!");
+      this.withdrawal();
+    } else {
+      this.balance -= withdraw;
+      //console.log(this.balance);
+      this.getBalance();
+    }
+  },
+  exitAccount: function () {
+    const leave = confirm("You have selected exit. Are you sure?");
+    if (leave) {
+      window.close();
+    } else {
+      atm();
+    }
+  },
 };
 
 // let const
@@ -82,16 +112,19 @@ function atm() {
 
   switch (message) {
     case 1:
-      console.log("case 1");
+      account.getBalance();
       break;
     case 2:
       account.deposit();
       break;
     case 3:
-      console.log("case 3");
+      account.withdrawal();
       break;
     case 4:
       account.getAccountName();
+      break;
+    case 5:
+      account.exitAccount();
       break;
   }
 }
